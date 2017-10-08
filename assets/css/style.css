@@ -1,0 +1,46 @@
+*{
+	box-sizing: border-box;
+}
+
+body{
+	font-size: 18px;
+}
+
+.wrapper{
+	width: 80%;
+	margin: 0 auto;
+}
+.characterInfo{
+	height: 250px;
+	width: 250px;
+	border: 3px solid #000;
+	border-radius: 15px;
+	padding: 15px;
+	margin: 20px;
+	float: left;
+	text-align: center;
+	background-color: #aaaaaa;
+	color: white;
+}
+
+.characterInfo img{
+	height: 175px;
+	width: 175px;
+}
+
+.hero{
+
+	background-color: #0000dd;
+
+}
+
+.defender{
+
+	background-color: #000000;
+
+
+}
+
+.enemies{
+	background-color: #880000;
+}
