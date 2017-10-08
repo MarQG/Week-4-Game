@@ -50,6 +50,11 @@ $("document").ready(function(){
 	var chooseEnemy = false;
 	var hero = {};
 	var defender = {};
+	var lightsaberOn = new Howl({ src:['assets/sounds/lightsaber_on.wav']});
+	var lightsaberOff = new Howl({ src:['assets/sounds/lightsaber_off.wav']});
+	var clash = [new Howl({ src:['assets/sounds/clash1.wav']}), new Howl({ src:['assets/sounds/clash2.wav']}), new Howl({ src:['assets/sounds/clash3.wav']}), new Howl({ src:['assets/sounds/clash4.wav']})];
+	var vader = new Howl({ src:['assets/sounds/darthvader_failedme.wav']});
+	var yoda = new Howl({ src:['assets/sounds/yoda_doordonot.wav']});
 	$("#attack").hide();
 	$("#reset").hide();
 
@@ -70,16 +75,18 @@ $("document").ready(function(){
 		hero = {};
 		defender = {};
 		$("#attack").hide();
-		$("#status-window").text("");
+		$("#characters").show();
+		$("#status-window").text("Select Your Hero!");
 		$("#hero").html("");
 		$("#defender").html("");
 		$("#enemies").html("");
 		$("#reset").hide();
+		$("#game-window").hide();
 		runGame();
 		
 	}
 
-		// function runGame
+	// function runGame
 	function runGame(){
 		if(chooseHero === true){
 			// loop through characters array and display avaiable characters
@@ -91,7 +98,7 @@ $("document").ready(function(){
 				character.html( "<p>" + characters[i].name + "</p>" +
 					"<img src='" + characters[i].img + "' >" +
 					"<p>" + characters[i].hitPoints + "</p>"
-					);
+				);
 				character.attr({
 					"data-name": characters[i].name,
 					"data-img": characters[i].img,
@@ -113,12 +120,14 @@ $("document").ready(function(){
 
 			$("#characters").html("");
 
+
 		} else if(chooseHero === false && chooseEnemy === false){
 			$(".character").each(function(index, value){
 				$(value).off();
 			});
 		}
-	
+	}
+
 	// Moves Player Hero into Hero section.
 	// Updates the display
 	// Stores Hero Data into the Hero Object
@@ -146,8 +155,11 @@ $("document").ready(function(){
 					"<p>" + hero.hitPoints + "</p>"
 					);
 				$("#hero").append($(this));
-
+				lightsaberOn.play();
 				runGame();
+				$("#characters").hide();
+				$("#game-window").show();
+				$("#status-window").text("Select An Enemy!");
 			});
 	}
 
@@ -182,6 +194,7 @@ $("document").ready(function(){
 				);
 			$("#defender").append($(this));
 			$("#attack").show();
+			$("#status-window").text("Let The Battle Begin!");
 			runGame();
 		});
 	}
@@ -190,14 +203,20 @@ $("document").ready(function(){
 	// Main game Logic
 	$("#attack").off().on("click", function(){
 		if(chooseEnemy === false){
+			for(var i = 0; i < clash.length; i++){
+				clash[i].stop();
+			}
+			clash[Math.floor(Math.random() * clash.length)].play();
 			defender.hitPoints -= hero.attackPower;
 			$("#status-window").text( hero.name +" attacked " + defender.name +" for " + hero.attackPower);
 			hero.attackPower += currentAttackGrowth;
-			if(defender.hitPoints < 0 && hero.hitPoints > 0){
+			if(defender.hitPoints <= 0 && hero.hitPoints > 0){
 				$("#defender").html("");
+				$("#status-window").text("You defeated " + defender.name + "! Pick Another Enemy!");
 				chooseEnemy = true;
 				if($(".enemies").length === 0){
-					$("#status-window").html( "You won!");
+					$("#status-window").text( "You won!");
+					yoda.play();
 					resetGame();
 
 				}
@@ -205,9 +224,10 @@ $("document").ready(function(){
 				console.log("Enemy Counter Attack");
 				hero.hitPoints -= defender.counterAttackPower;
 				$("#status-window").html( $("#status-window").text() + "<br>" +defender.name +" attacked " + hero.name +" for " + defender.counterAttackPower);
-				if(hero.hitPoints < 0){
+				if(hero.hitPoints <= 0){
 					console.log("You lost");
-					$("#status-window").html( "You Lose!");
+					$("#status-window").text( "You Lose!");
+					vader.play();
 					resetGame();
 				}
 			}
@@ -230,20 +250,14 @@ $("document").ready(function(){
 	}
 
 	function resetGame(){
+		$("#attack").hide();
 		$("#reset").show();
 		$("#reset").off().on("click", function(){
+			lightsaberOff.play();
 			initGame();
 		});
 
 	}
-}
-
-
-
-		
-
-
-
 	// Initialize Game
 	initGame();
 });
