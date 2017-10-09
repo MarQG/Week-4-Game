@@ -16,7 +16,7 @@ $("document").ready(function(){
 		{	
 			name: "Obi Wan Kenobi",
 			attackPower: 6,
-			counterAttackPower: 10,
+			counterAttackPower: 15,
 			hitPoints: 120,
 			img: "assets/images/obi_wan.jpg"
 		},
@@ -29,7 +29,7 @@ $("document").ready(function(){
 		},
 		{	
 			name: "Luke Skywalker",
-			attackPower: 8,
+			attackPower: 10,
 			counterAttackPower: 5,
 			hitPoints: 100,
 			img: "assets/images/luke_skywalker.jpg"
