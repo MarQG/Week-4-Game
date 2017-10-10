@@ -111,7 +111,7 @@ $("document").ready(function(){
 				character.addClass("character characterInfo");
 				character.html( "<p>" + characters[i].name + "</p>" +
 					"<img src='" + characters[i].img + "' >" +
-					"<p>" + characters[i].hitPoints + "</p>"
+					"<p> HP: " + characters[i].hitPoints + "</p>"
 				);
 				// Load character info into the element to be extracted later.
 				character.attr({
@@ -180,7 +180,7 @@ $("document").ready(function(){
 				$(this).html(
 					"<p>" + hero.name + "</p>" +
 					"<img src='" + hero.img + "' >" +
-					"<p>" + hero.hitPoints + "</p>"
+					"<p> HP: " + hero.hitPoints + "</p>"
 					);
 				// Append it to the hero div
 				$("#hero").append($(this));
@@ -234,7 +234,7 @@ $("document").ready(function(){
 			$(this).html(
 				"<p>" + defender.name + "</p>" +
 				"<img src='" + defender.img + "' >" +
-				"<p>" + defender.hitPoints + "</p>"
+				"<p> HP: " + defender.hitPoints + "</p>"
 				);
 			// Append it to the defender div
 			$("#defender").append($(this));
@@ -269,7 +269,7 @@ $("document").ready(function(){
 			// Hero Attacks first: Defender looses hit points - Hero's Attack Power
 			defender.hitPoints -= hero.attackPower;
 			// Update the Status Window of the Hero Attacking.
-			$("#status-window").text( hero.name +" attacked " + defender.name +" for " + hero.attackPower);
+			$("#status-window").text( hero.name +" attacked " + defender.name +" for " + hero.attackPower + " damage.");
 			// Increase the Hero's Attack Power by the Current Attack Growth
 			hero.attackPower += currentAttackGrowth;
 			// Check if the Defender Hit Points have reached 0
@@ -297,7 +297,7 @@ $("document").ready(function(){
 				// Defender Attacks Hero: Hero's Hit Points go down by the Defender's Counter Attack Power
 				hero.hitPoints -= defender.counterAttackPower;
 				// Update the Status Window with the counter attack.
-				$("#status-window").html( $("#status-window").text() + "<br>" +defender.name +" attacked " + hero.name +" for " + defender.counterAttackPower);
+				$("#status-window").html( $("#status-window").text() + "<br>" +defender.name +" attacked " + hero.name +" for " + defender.counterAttackPower + " damage.");
 				// Check if the Hero's Hit Points have reached 0
 				if(hero.hitPoints <= 0){
 					// If they have
@@ -326,13 +326,13 @@ $("document").ready(function(){
 		$(".hero").html(
 				"<p>" + hero.name + "</p>" +
 				"<img src='" + hero.img + "' >" +
-				"<p>" + hero.hitPoints + "</p>"
+				"<p> HP: " + hero.hitPoints + "</p>"
 		);
 		// Update any changes the Defender element
 		$(".defender").html(
 				"<p>" + defender.name + "</p>" +
 				"<img src='" + defender.img + "' >" +
-				"<p>" + defender.hitPoints + "</p>"
+				"<p> HP: " + defender.hitPoints + "</p>"
 		);
 	}
 
