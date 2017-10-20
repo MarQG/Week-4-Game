@@ -3,12 +3,14 @@ $("document").ready(function(){
 
 	// ====== Star Wars Force Heros ======
 	/*
-	Version: 2.0
+	Version: 3.0
 	Description:
 		This is a Star Wars Role Playing Game
 		The Player will get to pick their favorite hero and battle against
 		the remaining heros to see who is truly the best in the Star Wars
 		Universe!
+
+	Updates: Added feature for player to change enemy if they are losing.
 	*/
 
 	// ====== Game Variables ======
@@ -111,7 +113,7 @@ $("document").ready(function(){
 				character.addClass("character characterInfo");
 				character.html( "<p>" + characters[i].name + "</p>" +
 					"<img src='" + characters[i].img + "' >" +
-					"<p> HP: " + characters[i].hitPoints + "</p>"
+					'<p>HP: ' + characters[i].hitPoints + '</p>'
 				);
 				// Load character info into the element to be extracted later.
 				character.attr({
@@ -141,9 +143,9 @@ $("document").ready(function(){
 		// (chooseHero === false && chooseEnemy === false)
 		} else if(chooseHero === false && chooseEnemy === false){
 			// Loop through each character element and turn off their current click functions
-			$(".character").each(function(index, value){
-				$(value).off();
-			});
+			// $(".character").each(function(index, value){
+			// 	$(value).off();
+			// });
 		}
 	}
 
@@ -224,24 +226,47 @@ $("document").ready(function(){
 				hitPoints:parseInt($(this).attr("data-hp")) 
 			};
 			// Turn off the ability for the Player to select more that one defender
-			chooseEnemy = false;
-			// Update the defender classes
-			$(this).removeClass("character enemies");
-			$(this).addClass("defender");
-			// Remove the click event from this element
-			$(this).off();
-			// Update this element with defender information
-			$(this).html(
-				"<p>" + defender.name + "</p>" +
-				"<img src='" + defender.img + "' >" +
-				"<p> HP: " + defender.hitPoints + "</p>"
-				);
-			// Append it to the defender div
-			$("#defender").append($(this));
-			// Update Game Display
-			$("#attack").show();
-			$("#status-window").text("Let The Battle Begin!");
-			// Retunn to the runGame() to finish game setup.
+			if(chooseEnemy = true){
+				chooseEnemy = false;
+				// Update the defender classes
+				$(this).removeClass("character enemies");
+				$(this).addClass("defender");
+				// Remove the click event from this element
+				$(this).off();
+				// Update this element with defender information
+				$(this).html(
+					"<p>" + defender.name + "</p>" +
+					"<img src='" + defender.img + "' >" +
+					"<p> HP: " + defender.hitPoints + "</p>"
+					);
+				// Append it to the defender div
+				$("#defender").append($(this));
+				// Update Game Display
+				$("#attack").show();
+				$("#status-window").text("Let The Battle Begin!");
+				// Retunn to the runGame() to finish game setup.
+
+				$(".defender").on("click", function(){
+					$(this).removeClass("defender");
+					$(this).addClass("character enemies");
+					$(this).attr({
+						"data-name": defender.name,
+						"data-img": defender.img,
+						"data-hp": defender.hitPoints,
+						"data-attack": defender.attackPower,
+						"data-counter": defender.counterAttackPower
+					});
+					$("#enemies").append($(this));
+					chooseEnemy = true;
+
+					$("#defender").empty();
+					$("#attack").hide();
+					$("#status-window").text("Select An Enemy!");
+					runGame();
+				});
+
+			}
+			
 			runGame();
 		});
 	}
@@ -269,7 +294,7 @@ $("document").ready(function(){
 			// Hero Attacks first: Defender looses hit points - Hero's Attack Power
 			defender.hitPoints -= hero.attackPower;
 			// Update the Status Window of the Hero Attacking.
-			$("#status-window").text( hero.name +" attacked " + defender.name +" for " + hero.attackPower + " damage.");
+			$("#status-window").text( hero.name +" attacked " + defender.name +" for " + hero.attackPower );
 			// Increase the Hero's Attack Power by the Current Attack Growth
 			hero.attackPower += currentAttackGrowth;
 			// Check if the Defender Hit Points have reached 0
